@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Azizbek Curipto</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <img src="/static/logo.png" id="coin-btn" alt="coin">
+        <h2 id="counter">Tangalar: 0</h2>
+    </div>
+
+    <script>
+        const userId = new URLSearchParams(window.location.search).get("user_id");
+        const counter = document.getElementById("counter");
+        const btn = document.getElementById("coin-btn");
+
+        btn.addEventListener("click", async () => {
+            const res = await fetch("/click", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({user_id: userId})
+            });
+            const data = await res.json();
+            counter.innerText = "Tangalar: " + data.coins;
+        });
+
+        async function loadBalance() {
+            const res = await fetch(`/balance/${userId}`);
+            const data = await res.json();
+            counter.innerText = "Tangalar: " + data.coins;
+        }
+
+        loadBalance();
+    </script>
+</body>
+</html>
