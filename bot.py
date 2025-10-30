@@ -3,7 +3,7 @@ import requests
 import os
 
 TOKEN = "BOT_TOKENINGNI_BU_YERGA_QO'Y"  # ← bu joyga token
-WEBAPP_URL = "https://web-production-f93c8.up.railway.app"  # ← bu sening linking
+WEBAPP_URL = "https://web-production-cbda.up.railway.app/"  # ← bu sening linking
 
 bot = telebot.TeleBot(TOKEN)
 
