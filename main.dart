@@ -19,6 +19,7 @@ class _AzizbekCurptoAppState extends State<AzizbekCurptoApp> {
     _loadBalance();
   }
 
+  // Balansni mahalliy xotiradan o‘qish
   Future<void> _loadBalance() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -26,12 +27,12 @@ class _AzizbekCurptoAppState extends State<AzizbekCurptoApp> {
     });
   }
 
+  // Tanga qo‘shish va saqlash
   Future<void> _incrementBalance() async {
     final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _balance++;
-    });
+    _balance++;
     await prefs.setInt('balance', _balance);
+    setState(() {});
   }
 
   @override
@@ -43,10 +44,15 @@ class _AzizbekCurptoAppState extends State<AzizbekCurptoApp> {
         body: SafeArea(
           child: Center(
             child: SingleChildScrollView(
+              physics: const NeverScrollableScrollPhysics(),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(height: 20),
+
+                  // 🔹 Rasm (bosilganda kichraymaydi)
                   GestureDetector(
+                    behavior: HitTestBehavior.translucent,
                     onTap: _incrementBalance,
                     child: Container(
                       width: 220,
@@ -64,6 +70,7 @@ class _AzizbekCurptoAppState extends State<AzizbekCurptoApp> {
                       ),
                     ),
                   ),
+
                   const SizedBox(height: 15),
                   const Text(
                     'AZIZBEK CURUPTO',
@@ -73,7 +80,10 @@ class _AzizbekCurptoAppState extends State<AzizbekCurptoApp> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+
                   const SizedBox(height: 20),
+
+                  // 🔹 Balans ko‘rsatiladigan joy
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 25),
                     padding: const EdgeInsets.all(20),
@@ -99,7 +109,10 @@ class _AzizbekCurptoAppState extends State<AzizbekCurptoApp> {
                       ],
                     ),
                   ),
+
                   const SizedBox(height: 30),
+
+                  // 🔹 Tugmalar
                   Wrap(
                     alignment: WrapAlignment.center,
                     spacing: 15,
