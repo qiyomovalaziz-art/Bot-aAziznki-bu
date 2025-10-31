@@ -1,40 +1,57 @@
 body {
+  margin: 0;
+  padding: 0;
   background-color: #000;
-  color: #fff;
-  font-family: Arial, sans-serif;
+  color: white;
+  font-family: 'Poppins', sans-serif;
   text-align: center;
 }
 
-.logo-container {
-  margin-top: 30px;
+.container {
+  padding: 20px;
 }
 
-.logo {
-  width: 200px;
-  height: 200px;
+.title {
+  color: cyan;
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.profile img {
+  width: 220px;
+  height: 220px;
   border-radius: 50%;
   border: 3px solid cyan;
-  cursor: pointer;
+  object-fit: cover;
+  transition: transform 0.1s ease;
 }
 
 .balance-box {
-  background: #111;
+  background-color: #111;
+  margin: 20px auto;
+  width: 80%;
   padding: 15px;
-  margin: 20px;
   border-radius: 10px;
 }
 
-.buttons button {
-  background: #222;
-  color: white;
+.balance-box h1 {
+  font-size: 40px;
+  color: #fff;
+}
+
+button {
+  width: 150px;
+  height: 50px;
+  margin: 10px;
   border: none;
-  padding: 10px 15px;
-  margin: 5px;
   border-radius: 8px;
+  background-color: #111;
+  color: white;
+  font-size: 16px;
   cursor: pointer;
 }
 
-.buttons button:hover {
-  background: cyan;
-  color: black;
+button:hover {
+  background-color: #333;
 }
