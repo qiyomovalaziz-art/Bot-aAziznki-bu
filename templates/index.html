@@ -2,37 +2,25 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <title>Azizbek Curipto</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azizbek Crypto</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
-        <img src="/static/logo.png" id="coin-btn" alt="coin">
-        <h2 id="counter">Tangalar: 0</h2>
+        <h2 class="balance">💰 Balans</h2>
+
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="logo" class="logo">
+        </div>
+
+        <p class="coins">Tangalar: {{ coins }}</p>
+
+        <div class="bottom-menu">
+            <button onclick="location.href='/'">Menyu</button>
+            <button onclick="location.href='/tasks'">Vazifalar</button>
+            <button onclick="location.href='/wallet'">Hamyon</button>
+        </div>
     </div>
-
-    <script>
-        const userId = new URLSearchParams(window.location.search).get("user_id");
-        const counter = document.getElementById("counter");
-        const btn = document.getElementById("coin-btn");
-
-        btn.addEventListener("click", async () => {
-            const res = await fetch("/click", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({user_id: userId})
-            });
-            const data = await res.json();
-            counter.innerText = "Tangalar: " + data.coins;
-        });
-
-        async function loadBalance() {
-            const res = await fetch(`/balance/${userId}`);
-            const data = await res.json();
-            counter.innerText = "Tangalar: " + data.coins;
-        }
-
-        loadBalance();
-    </script>
 </body>
 </html>
