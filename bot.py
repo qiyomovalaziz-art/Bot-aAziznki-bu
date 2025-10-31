@@ -1,14 +1,12 @@
 from flask import Flask, request, jsonify
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
-import json
-import os
-import asyncio
+import json, os, asyncio
 
 app = Flask(__name__)
 
-# ====== BOT TOKEN ======
-BOT_TOKEN = os.getenv("BOT_TOKEN", "YOUR_TOKEN_HERE")
+# ====== BOT TOKEN (o'zingiznikini kiriting) ======
+BOT_TOKEN = os.getenv("BOT_TOKEN", "YOUR_BOT_TOKEN_HERE")
 
 # ====== BALANS FAYLI ======
 BALANCE_FILE = "balances.json"
@@ -29,13 +27,14 @@ def save_balances(balances):
         json.dump(balances, f, indent=4)
 
 
-# ====== Telegram komandasi ======
+# ====== Telegram komandalar ======
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     keyboard = [
         [InlineKeyboardButton("💰 Bosing va pul ishlang", url="https://sening-mini-app-urling.vercel.app")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
+
     await update.message.reply_text(
         f"Salom, {user.first_name}! 👋\nBu *Azizbek Curipto* mini ilovasi.\n\n"
         f"💎 Bosib tangalar ishlang!",
@@ -44,7 +43,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-# ====== Flask API-lar ======
+# ====== Flask API ======
 @app.route("/")
 def home():
     return "<h2>✅ Azizbek Curipto API ishlayapti!</h2>"
@@ -54,7 +53,8 @@ def home():
 def get_balance():
     user_id = request.args.get("user_id")
     balances = load_balances()
-    return jsonify({"balance": balances.get(user_id, 0)})
+    balance = balances.get(user_id, 0)
+    return jsonify({"balance": balance})
 
 
 @app.route("/add_coin", methods=["POST"])
@@ -67,7 +67,7 @@ def add_coin():
     return jsonify({"balance": balances[user_id]})
 
 
-# ====== Parallel ishga tushirish ======
+# ====== Ishga tushirish ======
 async def run_bot():
     app_bot = ApplicationBuilder().token(BOT_TOKEN).build()
     app_bot.add_handler(CommandHandler("start", start))
@@ -77,7 +77,7 @@ async def run_bot():
 
 def run_flask():
     print("🌐 Flask server ishga tushdi...")
-    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 8080)), debug=False)
+    app.run(host="0.0.0.0", port=8080)
 
 
 if __name__ == "__main__":
@@ -87,4 +87,4 @@ if __name__ == "__main__":
         loop.create_task(run_bot())
         run_flask()
     except Exception as e:
-        print("Xato:", e)
+        print("❌ Xato:", e)
