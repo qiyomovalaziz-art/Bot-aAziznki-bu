@@ -12,6 +12,7 @@ class AzizbekCurptoApp extends StatefulWidget {
 
 class _AzizbekCurptoAppState extends State<AzizbekCurptoApp> {
   int _balance = 0;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -19,114 +20,122 @@ class _AzizbekCurptoAppState extends State<AzizbekCurptoApp> {
     _loadBalance();
   }
 
-  // Balansni mahalliy xotiradan o‘qish
+  // 🔹 Balansni saqlash va o‘qish (mahalliy xotira orqali)
   Future<void> _loadBalance() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       _balance = prefs.getInt('balance') ?? 0;
+      _isLoading = false;
     });
   }
 
-  // Tanga qo‘shish va saqlash
   Future<void> _incrementBalance() async {
     final prefs = await SharedPreferences.getInstance();
-    _balance++;
+    setState(() {
+      _balance++;
+    });
     await prefs.setInt('balance', _balance);
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const MaterialApp(
+        home: Scaffold(
+          backgroundColor: Colors.black,
+          body: Center(
+            child: CircularProgressIndicator(color: Colors.cyanAccent),
+          ),
+        ),
+      );
+    }
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.black,
         body: SafeArea(
           child: Center(
-            child: SingleChildScrollView(
-              physics: const NeverScrollableScrollPhysics(),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20),
 
-                  // 🔹 Rasm (bosilganda kichraymaydi)
-                  GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: _incrementBalance,
-                    child: Container(
-                      width: 220,
-                      height: 220,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.cyanAccent,
-                          width: 3,
-                        ),
-                        image: const DecorationImage(
-                          image: AssetImage('assets/logo.png'),
-                          fit: BoxFit.cover,
-                        ),
+                // 🔹 Rasm — bosilganda hech qanday animatsiya yoki kichrayish yo‘q
+                GestureDetector(
+                  onTap: _incrementBalance,
+                  child: Container(
+                    width: 220,
+                    height: 220,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.cyanAccent,
+                        width: 3,
+                      ),
+                      image: const DecorationImage(
+                        image: AssetImage('assets/logo.png'),
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
+                ),
 
-                  const SizedBox(height: 15),
-                  const Text(
-                    'AZIZBEK CURUPTO',
-                    style: TextStyle(
-                      fontSize: 22,
-                      color: Colors.cyanAccent,
-                      fontWeight: FontWeight.bold,
-                    ),
+                const SizedBox(height: 15),
+                const Text(
+                  'AZIZBEK CURUPTO',
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: Colors.cyanAccent,
+                    fontWeight: FontWeight.bold,
                   ),
+                ),
 
-                  const SizedBox(height: 20),
+                const SizedBox(height: 20),
 
-                  // 🔹 Balans ko‘rsatiladigan joy
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 25),
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[900],
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      children: [
-                        const Text(
-                          'Umumiy balans',
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          '$_balance',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 36,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
+                // 🔹 Balans ko‘rsatish joyi
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 25),
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[900],
+                    borderRadius: BorderRadius.circular(10),
                   ),
-
-                  const SizedBox(height: 30),
-
-                  // 🔹 Tugmalar
-                  Wrap(
-                    alignment: WrapAlignment.center,
-                    spacing: 15,
-                    runSpacing: 15,
+                  child: Column(
                     children: [
-                      _buildButton(Icons.send, 'Yuborish'),
-                      _buildButton(Icons.swap_horiz, 'Almashtirish'),
-                      _buildButton(Icons.auto_awesome, 'Mayning'),
-                      _buildButton(Icons.shopping_cart, 'UC sotib olish'),
-                      _buildButton(Icons.list_alt, 'Topshiriqlar +1'),
+                      const Text(
+                        'Umumiy balans',
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        '$_balance',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 36,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ],
                   ),
-                ],
-              ),
+                ),
+
+                const SizedBox(height: 30),
+
+                // 🔹 Tugmalar
+                Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 15,
+                  runSpacing: 15,
+                  children: [
+                    _buildButton(Icons.send, 'Yuborish'),
+                    _buildButton(Icons.swap_horiz, 'Almashtirish'),
+                    _buildButton(Icons.auto_awesome, 'Mayning'),
+                    _buildButton(Icons.shopping_cart, 'UC sotib olish'),
+                    _buildButton(Icons.list_alt, 'Topshiriqlar +1'),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
