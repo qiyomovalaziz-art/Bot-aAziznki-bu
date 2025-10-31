@@ -1,10 +1,34 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const logo = document.getElementById("logo");
-  const balanceDisplay = document.getElementById("balance");
+const API_URL = "https://web-production-cbda.up.railway.app";
+const tg = window.Telegram.WebApp;
+const user_id = tg.initDataUnsafe?.user?.id || "demo_user";
 
-  logo.addEventListener("click", async () => {
-    const res = await fetch("/add_coin", { method: "POST" });
+const balanceText = document.getElementById("balance");
+const coinImage = document.getElementById("coinImage");
+
+// 🔹 Bosilganda tanga qo‘shish
+coinImage.addEventListener("click", async () => {
+  try {
+    const res = await fetch(`${API_URL}/add_coin`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user_id }),
+    });
     const data = await res.json();
-    balanceDisplay.textContent = data.balance;
-  });
+    balanceText.textContent = data.balance;
+  } catch (err) {
+    console.error("Xatolik:", err);
+  }
 });
+
+// 🔹 Balansni yuklash (ilova ochilganda)
+async function loadBalance() {
+  try {
+    const res = await fetch(`${API_URL}/get_balance?user_id=${user_id}`);
+    const data = await res.json();
+    balanceText.textContent = data.balance;
+  } catch (err) {
+    console.error("Balans olishda xatolik:", err);
+  }
+}
+
+loadBalance();
