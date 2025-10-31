@@ -1,31 +1,10 @@
-let tg = window.Telegram.WebApp;
-tg.expand();
+document.addEventListener("DOMContentLoaded", () => {
+  const logo = document.getElementById("logo");
+  const balanceDisplay = document.getElementById("balance");
 
-let balance = 0;
-let balanceElement = document.getElementById("balance");
-
-function updateBalance(amount) {
-  balance += amount;
-  balanceElement.innerText = balance;
-}
-
-function sendMoney() {
-  alert("💸 Pul yuborish funksiyasi tez orada qo'shiladi!");
-}
-
-function exchange() {
-  alert("🔁 Almashtirish funksiyasi hozircha test holatda!");
-}
-
-function mining() {
-  updateBalance(1);
-  alert("✨ Siz 1 ta token oldingiz!");
-}
-
-function buyUC() {
-  alert("🎮 UC sotib olish tez orada yo‘lga qo‘yiladi!");
-}
-
-function openTasks() {
-  alert("📋 Bugungi topshiriqlar: \n1. Botni ulashish\n2. Do‘stni taklif qilish");
-}
+  logo.addEventListener("click", async () => {
+    const res = await fetch("/add_coin", { method: "POST" });
+    const data = await res.json();
+    balanceDisplay.textContent = data.balance;
+  });
+});
