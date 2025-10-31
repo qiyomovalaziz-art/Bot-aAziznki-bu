@@ -1,55 +1,41 @@
-import telebot
-import requests
+from flask import Flask, request, jsonify
+import json
 import os
 
-TOKEN = "7589550087:AAERu7icdx5z9Ye_hfM7-FwNwgtJVja0R_M"  # ← bu joyga token
-WEBAPP_URL = "https://web-production-cbda.up.railway.app/"  # ← bu sening linking
+app = Flask(__name__)
 
-bot = telebot.TeleBot(TOKEN)
+# Faylga balans saqlanadi
+BALANCE_FILE = "balances.json"
 
-ADMIN_ID = 7973934849  # o‘zingning Telegram ID’ingni bu yerga yoz
+def load_balances():
+    if os.path.exists(BALANCE_FILE):
+        with open(BALANCE_FILE, "r") as f:
+            return json.load(f)
+    return {}
 
-@bot.message_handler(commands=["start"])
-def start(message):
-    user_id = str(message.chat.id)
-    text = (
-        "👋 Salom, bu yerda tanga to‘plash mumkin!\n\n"
-        "👇 Quyidagi tugma orqali o‘zingizning sahifangizni oching:"
-    )
-    markup = telebot.types.InlineKeyboardMarkup()
-    btn = telebot.types.InlineKeyboardButton(
-        "💰 Tanga to‘plash", url=f"{WEBAPP_URL}?user_id={user_id}"
-    )
-    markup.add(btn)
-    bot.send_message(message.chat.id, text, reply_markup=markup)
+def save_balances(balances):
+    with open(BALANCE_FILE, "w") as f:
+        json.dump(balances, f)
 
-@bot.message_handler(commands=["balance"])
-def balance(message):
-    user_id = str(message.chat.id)
-    res = requests.get(f"{WEBAPP_URL}/balance/{user_id}")
-    data = res.json()
-    bot.send_message(message.chat.id, f"💰 Sizda {data['coins']} ta tanga bor!")
+@app.route("/get_balance", methods=["GET"])
+def get_balance():
+    user_id = request.args.get("user_id")
+    balances = load_balances()
+    balance = balances.get(user_id, 0)
+    return jsonify({"balance": balance})
 
-@bot.message_handler(commands=["withdraw"])
-def withdraw(message):
-    bot.send_message(message.chat.id, "💼 Hamyon manzilingizni yuboring:")
+@app.route("/add_coin", methods=["POST"])
+def add_coin():
+    data = request.get_json()
+    user_id = str(data["user_id"])
+    balances = load_balances()
+    balances[user_id] = balances.get(user_id, 0) + 1
+    save_balances(balances)
+    return jsonify({"balance": balances[user_id]})
 
-    bot.register_next_step_handler(message, process_wallet)
+@app.route("/")
+def home():
+    return "Azizbek Curipto bot ishlayapti ✅"
 
-def process_wallet(message):
-    wallet = message.text
-    bot.send_message(message.chat.id, "⏳ So‘rov yuborildi, admin tekshiryapti.")
-    bot.send_message(
-        ADMIN_ID,
-        f"💸 {message.from_user.first_name} ({message.chat.id}) pul yechmoqchi.\n"
-        f"Hamyon: {wallet}\nTasdiqlash uchun /confirm_{message.chat.id}",
-    )
-
-@bot.message_handler(func=lambda m: m.text.startswith("/confirm_"))
-def confirm_withdraw(message):
-    user_id = message.text.split("_")[1]
-    bot.send_message(int(user_id), "✅ Pul yechish so‘rovi tasdiqlandi! Hamyoningizga tushdi.")
-    bot.send_message(ADMIN_ID, "✅ Tasdiq muvaffaqiyatli amalga oshdi.")
-
-print("Bot ishga tushdi...")
-bot.infinity_polling()
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8000)
