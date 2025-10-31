@@ -5,13 +5,12 @@ import json
 import os
 import asyncio
 
-# Flask app
 app = Flask(__name__)
 
-# === BOT TOKEN ===
+# ====== BOT TOKEN ======
 BOT_TOKEN = os.getenv("BOT_TOKEN", "YOUR_TOKEN_HERE")
 
-# === BALANS FAYLI ===
+# ====== BALANS FAYLI ======
 BALANCE_FILE = "balances.json"
 
 
@@ -30,7 +29,7 @@ def save_balances(balances):
         json.dump(balances, f, indent=4)
 
 
-# === Telegram komandasi ===
+# ====== Telegram komandasi ======
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     keyboard = [
@@ -45,7 +44,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-# === API ===
+# ====== Flask API-lar ======
 @app.route("/")
 def home():
     return "<h2>✅ Azizbek Curipto API ishlayapti!</h2>"
@@ -68,7 +67,7 @@ def add_coin():
     return jsonify({"balance": balances[user_id]})
 
 
-# === Parallel ishlatish ===
+# ====== Parallel ishga tushirish ======
 async def run_bot():
     app_bot = ApplicationBuilder().token(BOT_TOKEN).build()
     app_bot.add_handler(CommandHandler("start", start))
@@ -78,10 +77,14 @@ async def run_bot():
 
 def run_flask():
     print("🌐 Flask server ishga tushdi...")
-    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 8080)))
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 8080)), debug=False)
 
 
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    loop.create_task(run_bot())
-    run_flask()
+    try:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.create_task(run_bot())
+        run_flask()
+    except Exception as e:
+        print("Xato:", e)
