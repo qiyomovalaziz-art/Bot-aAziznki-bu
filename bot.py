@@ -8,7 +8,7 @@ import asyncio
 app = Flask(__name__)
 
 # ======  BOT TOKEN  ======
-BOT_TOKEN = "7589550087:AAERu7icdx5z9Ye_hfM7-FwNwgtJVja0R_M"  # ← shu yerga token kiriting
+BOT_TOKEN = os.getenv("BOT_TOKEN", "YOUR_BOT_TOKEN_HERE")  # Railway'da Environmentdan olinadi
 
 # ======  BALANS FAYLI  ======
 BALANCE_FILE = "balances.json"
@@ -39,7 +39,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_markup = InlineKeyboardMarkup(keyboard)
 
     await update.message.reply_text(
-        f"Salom, {user.first_name}! 👋\nBu *Azizbek Curipto* mini ilovasi.\n\n"
+        f"Salom, {user.first_name}! 👋\n"
+        f"Bu *Azizbek Curipto* mini ilovasi.\n\n"
         f"💎 Bosib tangalar ishlang!",
         parse_mode="Markdown",
         reply_markup=reply_markup
@@ -73,11 +74,11 @@ def home():
     return "<h2>✅ Azizbek Curipto API ishlayapti!</h2>"
 
 
-# ======  Botni parallel ishga tushirish  ======
+# ======  Parallel ishlatish  ======
 async def run_bot():
     app_bot = ApplicationBuilder().token(BOT_TOKEN).build()
     app_bot.add_handler(CommandHandler("start", start))
-    print("🤖 Bot ishlayapti...")
+    print("🤖 Bot ishga tushdi...")
     await app_bot.run_polling()
 
 
@@ -87,7 +88,7 @@ def run_flask():
 
 
 if __name__ == "__main__":
-    # Ikkalasini (bot va web) bir vaqtda ishlatish uchun
     loop = asyncio.get_event_loop()
+    # Flask va Botni parallel ishlatamiz
     loop.create_task(run_bot())
     run_flask()
