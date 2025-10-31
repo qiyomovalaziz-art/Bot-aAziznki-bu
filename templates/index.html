@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azizbek Crypto</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Azizbek Curupto</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h2 class="balance">💰 Balans</h2>
-
-        <div class="logo-container">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="logo" class="logo">
-        </div>
-
-        <p class="coins">Tangalar: {{ coins }}</p>
-
-        <div class="bottom-menu">
-            <button onclick="location.href='/'">Menyu</button>
-            <button onclick="location.href='/tasks'">Vazifalar</button>
-            <button onclick="location.href='/wallet'">Hamyon</button>
-        </div>
+  <div class="container">
+    <div class="header">
+      <img src="static/logo.png" alt="Azizbek Curupto" class="logo">
+      <h2>Umumiy balans</h2>
+      <h1 id="balance">0</h1>
     </div>
+
+    <div class="buttons">
+      <button onclick="sendMoney()">💸 Yuborish</button>
+      <button onclick="exchange()">🔁 Almashtirish</button>
+      <button onclick="mining()">✨ Mayning</button>
+      <button onclick="buyUC()">🎮 UC sotib olish</button>
+    </div>
+
+    <div class="tasks">
+      <button onclick="openTasks()">📋 Tugallanmagan topshiriqlar <span class="badge">+1</span></button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
