@@ -8,28 +8,35 @@
 </head>
 <body>
   <div class="container">
-    <div class="profile">
-      <img src="https://raw.githubusercontent.com/<USERNAME>/<REPO>/main/static/logo.png" id="logo" class="profile-pic" alt="Azizbek Curupto">
-      <h1>AZIZBEK CURUPTO</h1>
+    <!-- Rasm -->
+    <div class="logo-container">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Azizbek Curupto" class="logo" id="logo">
+      <h2>AZIZBEK CURUPTO</h2>
     </div>
 
-    <div class="balance">
-      <h2>Umumiy balans</h2>
-      <p id="balance">{{ balance }}</p>
+    <!-- Balans -->
+    <div class="balance-box">
+      <h3>Umumiy balans</h3>
+      <p id="balance">0</p>
     </div>
 
+    <!-- Tugmalar -->
     <div class="buttons">
-      <button>📤 Yuborish</button>
-      <button>🔁 Almashtirish</button>
+      <button>📩 Yuborish</button>
+      <button>🔄 Almashtirish</button>
       <button>✨ Mayning</button>
       <button>🎮 UC sotib olish</button>
-    </div>
-
-    <div class="task">
-      <button>📋 Tugallanmagan topshiriqlar +1</button>
+      <button>🧾 Tugallanmagan topshiriqlar +1</button>
     </div>
   </div>
 
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script>
+    // Rasm bosilganda tanga qo‘shish
+    let balance = 0;
+    document.getElementById('logo').addEventListener('click', function() {
+      balance++;
+      document.getElementById('balance').innerText = balance;
+    });
+  </script>
 </body>
 </html>
