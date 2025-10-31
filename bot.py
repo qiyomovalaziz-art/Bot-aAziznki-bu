@@ -8,7 +8,7 @@ import asyncio
 app = Flask(__name__)
 
 # ======  BOT TOKEN  ======
-BOT_TOKEN = "BU_YERGA_BOT_TOKENINGNI_QO'Y"  # ← shu yerga token kiriting
+BOT_TOKEN = "7589550087:AAERu7icdx5z9Ye_hfM7-FwNwgtJVja0R_M"  # ← shu yerga token kiriting
 
 # ======  BALANS FAYLI  ======
 BALANCE_FILE = "balances.json"
