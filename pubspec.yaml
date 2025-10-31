@@ -1,17 +1,15 @@
 name: azizbek_curpto
-description: Telegram mini ilova uchun Flutter frontend
+description: Simple crypto balance app
 publish_to: 'none'
-
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.3.0 <4.0.0'
+  sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  shared_preferences: ^2.3.2
-  cupertino_icons: ^1.0.8
+  shared_preferences: ^2.3.0
 
 dev_dependencies:
   flutter_test:
@@ -19,6 +17,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
   assets:
-    - assets/images/
+    - assets/logo.png
