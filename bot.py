@@ -2,12 +2,12 @@ import telebot
 import requests
 import os
 
-TOKEN = "BOT_TOKENINGNI_BU_YERGA_QO'Y"  # ← bu joyga token
+TOKEN = "7589550087:AAERu7icdx5z9Ye_hfM7-FwNwgtJVja0R_M"  # ← bu joyga token
 WEBAPP_URL = "https://web-production-cbda.up.railway.app/"  # ← bu sening linking
 
 bot = telebot.TeleBot(TOKEN)
 
-ADMIN_ID = 123456789  # o‘zingning Telegram ID’ingni bu yerga yoz
+ADMIN_ID = 7973934849  # o‘zingning Telegram ID’ingni bu yerga yoz
 
 @bot.message_handler(commands=["start"])
 def start(message):
