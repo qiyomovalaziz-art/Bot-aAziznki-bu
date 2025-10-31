@@ -1,20 +1,81 @@
 body {
-    background: black;
-    color: #00ffff;
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
     text-align: center;
-    font-family: 'Arial';
 }
 
 .container {
-    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 }
 
-img {
-    width: 250px;
-    cursor: pointer;
-    transition: transform 0.2s;
+.balance {
+    background-color: white;
+    color: black;
+    padding: 5px 15px;
+    border-radius: 10px;
+    font-size: 20px;
+    margin-top: 10px;
 }
 
-img:active {
-    transform: scale(0.95);
+.logo-container {
+    margin: 40px 0;
+}
+
+.logo {
+    width: 300px;
+    height: auto;
+    border-radius: 10px;
+}
+
+.coins {
+    color: cyan;
+    font-size: 18px;
+    margin-bottom: 60px;
+}
+
+.bottom-menu {
+    position: fixed;
+    bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.bottom-menu button {
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.task-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.task-list li {
+    background-color: #111;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 8px;
+}
+
+.withdraw-btn {
+    background-color: gold;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
 }
