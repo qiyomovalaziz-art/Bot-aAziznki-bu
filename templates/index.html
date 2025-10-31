@@ -4,29 +4,32 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Azizbek Curupto</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <img src="static/logo.png" alt="Azizbek Curupto" class="logo">
+    <div class="profile">
+      <img src="https://raw.githubusercontent.com/<USERNAME>/<REPO>/main/static/logo.png" id="logo" class="profile-pic" alt="Azizbek Curupto">
+      <h1>AZIZBEK CURUPTO</h1>
+    </div>
+
+    <div class="balance">
       <h2>Umumiy balans</h2>
-      <h1 id="balance">0</h1>
+      <p id="balance">{{ balance }}</p>
     </div>
 
     <div class="buttons">
-      <button onclick="sendMoney()">💸 Yuborish</button>
-      <button onclick="exchange()">🔁 Almashtirish</button>
-      <button onclick="mining()">✨ Mayning</button>
-      <button onclick="buyUC()">🎮 UC sotib olish</button>
+      <button>📤 Yuborish</button>
+      <button>🔁 Almashtirish</button>
+      <button>✨ Mayning</button>
+      <button>🎮 UC sotib olish</button>
     </div>
 
-    <div class="tasks">
-      <button onclick="openTasks()">📋 Tugallanmagan topshiriqlar <span class="badge">+1</span></button>
+    <div class="task">
+      <button>📋 Tugallanmagan topshiriqlar +1</button>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
