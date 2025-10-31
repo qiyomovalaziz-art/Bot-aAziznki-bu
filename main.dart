@@ -19,7 +19,6 @@ class _AzizbekCurptoAppState extends State<AzizbekCurptoApp> {
     _loadBalance();
   }
 
-  // Tanga saqlanadigan joy (local storage)
   Future<void> _loadBalance() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -47,8 +46,6 @@ class _AzizbekCurptoAppState extends State<AzizbekCurptoApp> {
               child: Column(
                 children: [
                   const SizedBox(height: 20),
-
-                  // Rasm (bosilganda tanga qo‘shiladi, lekin kichraymaydi)
                   GestureDetector(
                     onTap: _incrementBalance,
                     child: Container(
@@ -67,7 +64,6 @@ class _AzizbekCurptoAppState extends State<AzizbekCurptoApp> {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 15),
                   const Text(
                     'AZIZBEK CURUPTO',
@@ -78,8 +74,6 @@ class _AzizbekCurptoAppState extends State<AzizbekCurptoApp> {
                     ),
                   ),
                   const SizedBox(height: 20),
-
-                  // Balans qismi
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 25),
                     padding: const EdgeInsets.all(20),
@@ -105,10 +99,7 @@ class _AzizbekCurptoAppState extends State<AzizbekCurptoApp> {
                       ],
                     ),
                   ),
-
                   const SizedBox(height: 30),
-
-                  // Tugmalar
                   Wrap(
                     alignment: WrapAlignment.center,
                     spacing: 15,
@@ -118,7 +109,7 @@ class _AzizbekCurptoAppState extends State<AzizbekCurptoApp> {
                       _buildButton(Icons.swap_horiz, 'Almashtirish'),
                       _buildButton(Icons.auto_awesome, 'Mayning'),
                       _buildButton(Icons.shopping_cart, 'UC sotib olish'),
-                      _buildButton(Icons.list_alt, 'Tugallanmagan topshiriqlar +1'),
+                      _buildButton(Icons.list_alt, 'Topshiriqlar +1'),
                     ],
                   ),
                 ],
