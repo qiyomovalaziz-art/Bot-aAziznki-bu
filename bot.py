@@ -5,16 +5,16 @@ import json
 import os
 import asyncio
 
+# Flask app
 app = Flask(__name__)
 
-# ======  BOT TOKEN  ======
-BOT_TOKEN = os.getenv("BOT_TOKEN", "YOUR_BOT_TOKEN_HERE")  # Railway'da Environmentdan olinadi
+# === BOT TOKEN ===
+BOT_TOKEN = os.getenv("BOT_TOKEN", "YOUR_TOKEN_HERE")
 
-# ======  BALANS FAYLI  ======
+# === BALANS FAYLI ===
 BALANCE_FILE = "balances.json"
 
 
-# ======  Balansni yuklash va saqlash  ======
 def load_balances():
     if os.path.exists(BALANCE_FILE):
         with open(BALANCE_FILE, "r") as f:
@@ -30,65 +30,58 @@ def save_balances(balances):
         json.dump(balances, f, indent=4)
 
 
-# ======  Telegram /start komandasi  ======
+# === Telegram komandasi ===
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     keyboard = [
         [InlineKeyboardButton("💰 Bosing va pul ishlang", url="https://sening-mini-app-urling.vercel.app")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-
     await update.message.reply_text(
-        f"Salom, {user.first_name}! 👋\n"
-        f"Bu *Azizbek Curipto* mini ilovasi.\n\n"
+        f"Salom, {user.first_name}! 👋\nBu *Azizbek Curipto* mini ilovasi.\n\n"
         f"💎 Bosib tangalar ishlang!",
         parse_mode="Markdown",
         reply_markup=reply_markup
     )
 
 
-# ======  Flask API-lar  ======
+# === API ===
+@app.route("/")
+def home():
+    return "<h2>✅ Azizbek Curipto API ishlayapti!</h2>"
+
 
 @app.route("/get_balance", methods=["GET"])
 def get_balance():
     user_id = request.args.get("user_id")
     balances = load_balances()
-    balance = balances.get(user_id, 0)
-    return jsonify({"balance": balance})
+    return jsonify({"balance": balances.get(user_id, 0)})
 
 
 @app.route("/add_coin", methods=["POST"])
 def add_coin():
     data = request.get_json()
     user_id = str(data.get("user_id"))
-
     balances = load_balances()
     balances[user_id] = balances.get(user_id, 0) + 1
     save_balances(balances)
-
     return jsonify({"balance": balances[user_id]})
 
 
-@app.route("/")
-def home():
-    return "<h2>✅ Azizbek Curipto API ishlayapti!</h2>"
-
-
-# ======  Parallel ishlatish  ======
+# === Parallel ishlatish ===
 async def run_bot():
     app_bot = ApplicationBuilder().token(BOT_TOKEN).build()
     app_bot.add_handler(CommandHandler("start", start))
-    print("🤖 Bot ishga tushdi...")
+    print("🤖 Telegram bot ishga tushdi...")
     await app_bot.run_polling()
 
 
 def run_flask():
     print("🌐 Flask server ishga tushdi...")
-    app.run(host="0.0.0.0", port=8000)
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 8080)))
 
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
-    # Flask va Botni parallel ishlatamiz
     loop.create_task(run_bot())
     run_flask()
